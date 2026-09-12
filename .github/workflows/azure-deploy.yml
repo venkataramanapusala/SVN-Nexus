@@ -1,0 +1,44 @@
+name: Deploy to Azure Web App
+
+# Trigger the workflow on every push to main, or manually
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: svnnexus-amh8hvhdeec0c7cy   # Name of your Azure Web App (must match the Azure resource name)
+  AZURE_WEBAPP_PACKAGE_PATH: '.'                  # Path to the site content to deploy
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. (Optional) Set up Node.js in case future build steps are needed
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Package the static site (HTML, CSS, JS) for deployment
+      - name: Prepare deployment package
+        run: |
+          mkdir -p deploy
+          cp -r index.html style.css script.js README.md deploy/ 2>/dev/null || true
+
+      # 4. Deploy to Azure Web App using the publish profile stored in secrets
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/deploy
