@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: svnnexus-amh8hvhdeec0c7cy   # Name of your Azure Web App (must match the Azure resource name)
-  AZURE_WEBAPP_PACKAGE_PATH: '.'                  # Path to the site content to deploy
+  AZURE_WEBAPP_NAME: svnnexus          # Actual Azure Web App resource name (matches publish profile's msdeploySite)
+  AZURE_WEBAPP_PACKAGE_PATH: '.'        # Path to the site content to deploy
 
 permissions:
   contents: read
