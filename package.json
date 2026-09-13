@@ -1,0 +1,14 @@
+{
+  "name": "svn-nexus-website",
+  "version": "1.0.0",
+  "description": "Static company website for SVN Nexus Private Limited, served via a minimal Node HTTP server on Azure App Service.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

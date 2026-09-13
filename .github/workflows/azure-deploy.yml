@@ -23,12 +23,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Package the static site (HTML, CSS, JS) for deployment
-      #    No build step is required since this is a plain HTML/CSS/JS site.
+      # 2. Package the static site (HTML, CSS, JS) together with the Node
+      #    server that Azure App Service uses to actually serve it.
+      #    Including package.json lets Azure's Oryx build system auto-detect
+      #    a Node app and run `npm start` on deploy, without requiring a
+      #    manually configured startup command in the Azure Portal.
       - name: Prepare deployment package
         run: |
           mkdir -p deploy
-          cp -r index.html style.css script.js README.md deploy/ 2>/dev/null || true
+          cp -r index.html style.css script.js README.md package.json server.js deploy/ 2>/dev/null || true
 
       # 3. Deploy to Azure Web App using the publish profile stored in secrets
       - name: Deploy to Azure Web App
